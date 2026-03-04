@@ -1410,6 +1410,196 @@ h6 {
 }
 
 /* ============================================================
+   NOTICIAS DESTACADAS
+   Pegar al final de estilos.css, antes de los @media queries
+   (o en el bloque responsivo correspondiente si preferís)
+============================================================ */
+
+/* ── Contenedor de la sección ── */
+.noticias {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Detalle decorativo de fondo — hereda el estilo de .section--alt */
+.noticias::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 60% 40% at 80% 20%,
+      var(--color-primary-subtle) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 10% 80%,
+      var(--color-secondary-subtle) 0%,
+      transparent 70%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.noticias .u-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Grid de noticias ── */
+.noticias__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+/* ── Card ── */
+.news-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-light-2);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.news-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Imagen ── */
+.news-card__img-wrap {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--color-light-2);
+  flex-shrink: 0;
+}
+
+.news-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.news-card__img-wrap:hover .news-card__img,
+.news-card:hover .news-card__img {
+  transform: scale(1.05);
+}
+
+/* Fallback si no hay imagen (placeholder visual) */
+.news-card__img-wrap:not(:has(img[src])),
+.news-card__img[src=""],
+.news-card__img:not([src]) {
+  background: linear-gradient(
+    135deg,
+    var(--color-light-2) 0%,
+    var(--color-light-3) 100%
+  );
+}
+
+/* ── Badge de categoría ── */
+.news-card__category {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  padding: var(--space-1) var(--space-3);
+  background: var(--gradient-brand);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  line-height: 1.6;
+  box-shadow: var(--shadow-primary-sm);
+  pointer-events: none;
+}
+
+/* ── Cuerpo de la card ── */
+.news-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--space-6);
+  gap: var(--space-3);
+}
+
+/* ── Fecha ── */
+.news-card__date {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Título ── */
+.news-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.news-card__title-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.news-card__title-link:hover,
+.news-card__title-link:focus-visible {
+  color: var(--color-primary);
+}
+
+.news-card__title-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Descripción ── */
+.news-card__desc {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-text-body);
+  flex: 1;
+
+  /* Limitar a 3 líneas con ellipsis para mantener uniformidad */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── CTA "Leer más" ── */
+.news-card__cta {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+}
+
+/* ── Footer de sección — botón "Ver todas" ── */
+.noticias__footer {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-12);
+}
+
+/* ============================================================
    CONTACT SECTION
 ============================================================ */
 .contact {
@@ -2000,6 +2190,20 @@ h6 {
   .footer__grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .noticias__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  /* La tercera card ocupa el ancho completo en tablet para
+     evitar desequilibrio visual */
+  .noticias__grid .news-card:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 560px;
+    justify-self: center;
+    width: 100%;
+  }
 }
 
 /* Between 900px and 1024px — nav is already in mobile mode */
@@ -2074,6 +2278,44 @@ h6 {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .noticias__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+  }
+
+  .noticias__grid .news-card:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .noticias__footer {
+    margin-top: var(--space-8);
+  }
+}
+
+/* Mobile — 640px */
+@media (max-width: 640px) {
+  .noticias__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  /* Cancelar el override del tercer elemento */
+  .noticias__grid .news-card:nth-child(3) {
+    grid-column: auto;
+    max-width: 100%;
+    justify-self: auto;
+  }
+
+  .news-card__body {
+    padding: var(--space-5);
+  }
+
+  .news-card__title {
+    font-size: var(--text-base);
+  }
 }
 
 @media (max-width: 480px) {
@@ -2117,6 +2359,26 @@ h6 {
   }
   .logos__item {
     font-size: var(--text-base);
+  }
+
+  .noticias__grid {
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+
+  .news-card__body {
+    padding: var(--space-4);
+    gap: var(--space-2);
+  }
+
+  .noticias__footer {
+    margin-top: var(--space-6);
+  }
+
+  /* En móviles muy pequeños el botón "Ver todas" ocupa el ancho */
+  .noticias__footer .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
